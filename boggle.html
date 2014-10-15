@@ -1,0 +1,97 @@
+<html>
+<head>
+	<title>Boggle Board</title>
+	<script language="JavaScript">
+	function randnum(x){
+		return Math.floor(Math.random() * x)
+	}
+	function fact(n) {
+		var r = 1;
+		for (i=2;i<=n;i++) r*=i;
+		return r;
+	}
+	function randPermutation(n) {
+		var dst = Array(n);
+		var used = Array(n);
+		for (i=0; i<n; i++) dst[i] = -1;
+		for (i=0; i<n; i++) used[i] = 0;
+		
+		for (i=0; i<n; i++) {
+			c = randnum(n-i);
+			cnt = 0;
+			for (j=0; j<n; j++) {
+				if (!used[j]) {
+					if (cnt == c) {
+						used[j] = 1;
+						dst[i] = j;
+						break;
+					}
+					cnt = cnt + 1	
+				}
+			}
+		}
+		
+		return dst;
+	}
+	function genRandom() {
+		el = document.boggle.elements;
+		dice = Array('ttooaw','eeghnw','hlnnrz','aaeegn',
+					 'affkps','eiosst','deilrx','ehrtuw',
+					 'cimout','achops','eeinsu','abbjoo',
+					 'himnqu','distty','elrtty','delrvy');
+		
+		var a = randPermutation(16);
+		
+		for (i=0; i<4; i++) {
+			for (j=0; j<4; j++) {
+				l = dice[a[4*i+j]][randnum(6)];
+				if (l=='q') l = 'qu';
+				el['b'+i+''+j].value = l;
+			}
+		}
+		
+		/*
+		str = "aaabcdeeeeefghiiijklmnooopqrssstuuvwxyz";
+		for (i=0; i<4; i++){
+			for (j=0; j<4; j++){
+				let = randnum(str.length);
+				if (str[let] == 'q') l = 'qu'; else l=str[let];
+				el["b"+i+""+j].value = l;
+			}
+		}
+		*/
+	}
+	</script>
+</head>
+
+<body>
+
+<form action="/cgi-bin/boggle.cgi" method=get name=boggle>
+<p>	<input type=text size=2 maxlength=2 name='b00'>
+	<input type=text size=2 maxlength=2 name='b10'>
+	<input type=text size=2 maxlength=2 name='b20'>
+	<input type=text size=2 maxlength=2 name='b30'>
+</p>
+<p>	<input type=text size=2 maxlength=2 name='b01'>
+	<input type=text size=2 maxlength=2 name='b11'>
+	<input type=text size=2 maxlength=2 name='b21'>
+	<input type=text size=2 maxlength=2 name='b31'>
+</p>
+<p>	<input type=text size=2 maxlength=2 name='b02'>
+	<input type=text size=2 maxlength=2 name='b12'>
+	<input type=text size=2 maxlength=2 name='b22'>
+	<input type=text size=2 maxlength=2 name='b32'>
+</p>
+<p>	<input type=text size=2 maxlength=2 name='b03'>
+	<input type=text size=2 maxlength=2 name='b13'>
+	<input type=text size=2 maxlength=2 name='b23'>
+	<input type=text size=2 maxlength=2 name='b33'>
+</p>
+
+<p><input type=submit value="Find words"></p>
+<p><input type=button value="Random Board" onClick="genRandom()"></p>
+
+</form>
+
+</body>
+</html>

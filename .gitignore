@@ -1,0 +1,7 @@
+*.o
+*.mmapped
+allinone
+m2
+makemm
+webboggle
+*.out
