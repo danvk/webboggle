@@ -1,3 +1,8 @@
+Fast one-off Boggle solver, great for building web UIs.
+
+The goal is to minimize the time to get all the words on a board, including
+initialization time.
+
 To get going:
 
     make clean
@@ -23,6 +28,9 @@ The to find the words on a board:
     nim 13 02 03
     plonk 33 32 23 13 22
     pol 33 23 32
+
+The numbers are coordinates on the board, e.g. `11` = 2nd cell from left, 2nd
+cell from top.
 
 The idea is that this is really fast:
 
