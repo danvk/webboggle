@@ -33,8 +33,6 @@ void usage_and_die(int argc, char** argv) {
 	exit(1);
 }
 
-// quers latg sine ters
-
 int main(int argc, char** argv) 
 {
 	if (argc != 3) usage_and_die(argc, argv);
@@ -65,7 +63,13 @@ void setBd(char* lets) {
 
 void addSoln( char* wd, int endX, int endY ) {
 	int len = strlen(wd);
-	printf("%s", wd);
+        for (int i = 0; i < len; i++) {
+        	if (wd[i] == 'q') {
+        		printf("qu");
+        	} else {
+        		printf("%c", wd[i]);
+        	}
+        }
 	
 	// Now figure out the path
 	for (int n=1; n<len; n++) {
