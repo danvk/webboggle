@@ -42,7 +42,37 @@ i.e. 4ms to load the dictionary and find all the words.
 REST Server
 -----------
 
-Configure Heroku multi buildpack (we need Python & C):
+There's a simple Flask server included which demonstrates how this might be
+used as part of a web page.
+
+    $ ./server.py
+
+```
+$ curl 'http://localhost:5000/abcdefghijklmnop'
+```
+
+```json
+{
+    "fie": "11 02 01",
+    "fin": "11 02 13",
+    "fink": "11 02 13 22",
+    "fino": "11 02 13 23",
+    "glop": "21 32 23 33",
+    "ink": "02 13 22",
+    "jin": "12 02 13",
+    "jink": "12 02 13 22",
+    "knife": "22 13 02 11 01",
+    "knop": "22 13 23 33",
+    "kop": "22 23 33",
+    "lop": "32 23 33",
+    "mink": "03 02 13 22",
+    "nim": "13 02 03",
+    "plonk": "33 32 23 13 22",
+    "pol": "33 23 32"
+}
+```
+
+To deploy, you need to configure the Heroku multi buildpack (we need Python &
+C):
 
     heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
-
