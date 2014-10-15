@@ -38,3 +38,11 @@ The idea is that this is really fast:
     0.00s user 0.00s system 60% cpu 0.004 total
 
 i.e. 4ms to load the dictionary and find all the words.
+
+REST Server
+-----------
+
+Configure Heroku multi buildpack (we need Python & C):
+
+    heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
+

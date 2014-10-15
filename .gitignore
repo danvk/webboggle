@@ -5,3 +5,4 @@ m2
 makemm
 webboggle
 *.out
+*.pyc
