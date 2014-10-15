@@ -79,7 +79,7 @@ void loadAllWords(char* dict) {
 	FILE* f = fopen(dict,"r");
 	
 	int idx = 0;
-	while (!feof(f) && fscanf(f,"%s",wd))
+	while (!feof(f) && fscanf(f,"%s",wd) != EOF)
 	{
 		int i, x = wd[0] - 'a';
 		if (x<0 || x>26) continue;

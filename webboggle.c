@@ -28,11 +28,23 @@ void setBd(char* lets);
 int startsWord(char* key);
 int isWord(char* key);
 
+void usage_and_die(int argc, char** argv) {
+	fprintf(stderr, "Usage: %s <mmapped dictionary> <catdlinemaropets>\n", argv[0]);
+	exit(1);
+}
+
+// quers latg sine ters
+
 int main(int argc, char** argv) 
 {
-	if (argc != 3 || strlen(argv[2]) != 16) {
-		fprintf(stderr, "Usage: %s <mmapped dictionary> <catdlinemaropets>\n", argv[0]);
-		exit(1);
+	if (argc != 3) usage_and_die(argc, argv);
+
+        // need either 16 non-qs, or 17 letters with one 'qu'.
+        int board_len = strlen(argv[2]);
+        char* qu = strstr(argv[2], "qu");
+        char* qu2 = qu ? strstr(qu + 1, "qu") : NULL;
+        if (!((board_len == 16 && !qu) || (board_len == 17 && qu && !qu2))) {
+        	usage_and_die(argc, argv);
 	}
 
 	loadDict(argv[1]);
@@ -84,14 +96,9 @@ void solve(int x, int y, int n, char* wdSoFar)
 					!prev[cx][cy])
 				{
 					wdSoFar[n] = bd[cx][cy];
-					if (wdSoFar[n] == 'q')
-						wdSoFar[n++ + 1] = 'u';
 					wdSoFar[n+1] = '\0';
 					
 					if (startsWord(wdSoFar)) {
-						if (!strcmp(wdSoFar, "antimere")) {
-							//printf("antimere antimere!\n");
-						}
 						if (n>=2 && isWord(wdSoFar)) {
 							addSoln(wdSoFar, cx, cy); 
 						}
@@ -100,9 +107,6 @@ void solve(int x, int y, int n, char* wdSoFar)
 						solve(cx, cy, n+1, wdSoFar);
 						prev[cx][cy] = 0;
 					}
-					
-					if (wdSoFar[n-1] == 'q')
-						n--;
 				}
 				
 			}
@@ -122,12 +126,7 @@ void doDetailedSearch()
 	for (int i=0; i<4; i++) {
 		for (int j=0; j<4; j++) {
 			wd[0] = bd[i][j];
-			n = 1;
-			if (wd[0] == 'q') {
-				wd[1] = 'u';
-				n=2;
-			}
-			wd[n] = '\0';
+			wd[1] = '\0';
 			prev[i][j] = n;
 			solve(i, j, n, wd);
 			prev[i][j] = 0;
