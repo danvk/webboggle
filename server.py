@@ -27,11 +27,15 @@ from flask import Flask, jsonify, Response
 
 app = Flask(__name__)
 
+@app.after_request
+def after_request(response):
+    # Live dangerously! Allow cross-domain XHRs for all requests.
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
 @app.route("/<bd>")
 def get_words(bd):
-    # Allow cross-domain XHRs
-    Response().headers.add('Access-Control-Allow-Origin', '*')
-
     bd = bd.lower()
     if not re.match(r'^[a-z.]*$', bd):
         return jsonify({
