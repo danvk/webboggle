@@ -76,7 +76,7 @@ void addSoln( char* wd, int endX, int endY ) {
 		for (int x=0; x<4; x++) {
 			for (int y=0; y<4; y++) {
 				if (prev[x][y] == n)
-					printf(" %d%d", y, x);
+					printf(" %d%d", x, y);
 			}
 		}
 	}
