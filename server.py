@@ -23,12 +23,15 @@ import subprocess
 
 COMMAND = ['./webboggle', 'scrabble-words.mmapped']
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
 
 app = Flask(__name__)
 
 @app.route("/<bd>")
 def get_words(bd):
+    # Allow cross-domain XHRs
+    Response().headers.add('Access-Control-Allow-Origin', '*')
+
     bd = bd.lower()
     if not re.match(r'^[a-z.]*$', bd):
         return jsonify({
