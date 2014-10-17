@@ -81,7 +81,7 @@ void addSoln( char* wd, int endX, int endY ) {
 		}
 	}
 	
-	printf(" %d%d\n", endY, endX);
+	printf(" %d%d\n", endX, endY);
 }
 
 void solve(int x, int y, int n, char* wdSoFar)
