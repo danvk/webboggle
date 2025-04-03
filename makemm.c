@@ -14,8 +14,8 @@ int pos;
 char* buf;
 int bufSize;
 
-int* wds;
-int nWds, nWdB;
+uint32_t* wds;
+uint32_t nWds, nWdB;
 
 void loadAllWords(char* dict);
 
@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 
 	nWdB = 1<<14;
 	nWds = 0;
-	wds = (int*)malloc(nWdB * sizeof(int));
+	wds = (uint32_t*)malloc(nWdB * sizeof(uint32_t));
 
 	pos = 0;
 	bufSize = 1<<20;
@@ -42,8 +42,8 @@ int main(int argc, char** argv) {
 
 	// Write out the dump
 	f = fopen(argv[2], "w");
-	fwrite(&nWds, sizeof(int), 1, f);
-	fwrite(wds, sizeof(int), nWds, f);
+	fwrite(&nWds, sizeof(uint32_t), 1, f);
+	fwrite(wds, sizeof(uint32_t), nWds, f);
 	fwrite(buf, sizeof(char), pos, f);
 	fclose(f);
 }
@@ -59,10 +59,10 @@ void addItem(char* key) {
 	// Make a note of where this word starts
 	if (nWdB < nWds + 1) {
 		nWdB *= 2;
-		wds = (int*) realloc(wds, nWdB*sizeof(int));
+		wds = (uint32_t*) realloc(wds, nWdB*sizeof(uint32_t));
 	}
 	wds[nWds++] = pos;
-	
+
 	for (; *key; key++){
 		buf[pos++] = *key;
 		if (*key == 'q' && key[1] ==  'u')
@@ -77,15 +77,15 @@ void loadAllWords(char* dict) {
 	char wd[256];
 	int letCnt[26];
 	FILE* f = fopen(dict,"r");
-	
+
 	int idx = 0;
 	while (!feof(f) && fscanf(f,"%s",wd) != EOF)
 	{
 		int i, x = wd[0] - 'a';
 		if (x<0 || x>26) continue;
-		
+
 		for (i=0; i<26;i++) letCnt[i] = 0;
-		
+
 		int hasQ = 0;
 		for (i=0; wd[i]; i++) {
 			int c = wd[i] - 'a';
@@ -100,9 +100,9 @@ void loadAllWords(char* dict) {
 		idx++;
 eol:	;
 	}
-	
+
 	//printf("Loaded %d words\n", s->num);
-	
+
 	fclose(f);
 }
 

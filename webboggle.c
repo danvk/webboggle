@@ -13,8 +13,8 @@
 #include <unistd.h>
 
 // mmapped dictionary
-int nWds;
-int* wds;
+uint32_t nWds;
+uint32_t* wds;
 char* dict;
 
 char bd[4][4];
@@ -33,7 +33,7 @@ void usage_and_die(int argc, char** argv) {
 	exit(1);
 }
 
-int main(int argc, char** argv) 
+int main(int argc, char** argv)
 {
 	if (argc != 3) usage_and_die(argc, argv);
 
@@ -70,7 +70,7 @@ void addSoln( char* wd, int endX, int endY ) {
         		printf("%c", wd[i]);
         	}
         }
-	
+
 	// Now figure out the path
 	for (int n=1; n<len; n++) {
 		for (int x=0; x<4; x++) {
@@ -80,7 +80,7 @@ void addSoln( char* wd, int endX, int endY ) {
 			}
 		}
 	}
-	
+
 	printf(" %d%d\n", endX, endY);
 }
 
@@ -88,31 +88,31 @@ void solve(int x, int y, int n, char* wdSoFar)
 {
 	int cx, cy;
 	//printf("%d: %s\n", n, wdSoFar);
-	
+
 	for (int dx=-1; dx<=1; dx++) {
 		for (int dy=-1; dy<=1; dy++) {
 			if (dx || dy) {
 				cx = x + dx;
 				cy = y + dy;
-				
+
 				if (cx >= 0 && cx < 4 &&
 					cy >= 0 && cy < 4 &&
 					!prev[cx][cy])
 				{
 					wdSoFar[n] = bd[cx][cy];
 					wdSoFar[n+1] = '\0';
-					
+
 					if (startsWord(wdSoFar)) {
 						if (n>=2 && isWord(wdSoFar)) {
-							addSoln(wdSoFar, cx, cy); 
+							addSoln(wdSoFar, cx, cy);
 						}
-						
+
 						prev[cx][cy] = 1+n;
 						solve(cx, cy, n+1, wdSoFar);
 						prev[cx][cy] = 0;
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -122,11 +122,11 @@ void doDetailedSearch()
 {
 	char wd[17] = "";
 	int n = 0;
-	
+
 	for (int i=0; i<4; i++)
 		for (int j=0; j<4; j++)
 			prev[i][j] = 0;
-	
+
 	for (int i=0; i<4; i++) {
 		for (int j=0; j<4; j++) {
 			wd[0] = bd[i][j];
@@ -140,13 +140,13 @@ void doDetailedSearch()
 
 // Use mmap to load the dictionary quickly from disk
 void loadDict(char* file) {
-	int fd;	
+	int fd;
 	struct stat fst;
-	int* buf;
+	uint32_t* buf;
 
 	fd = open(file, O_RDONLY);
 	stat(file, &fst);
-	buf = mmap(0, fst.st_size, PROT_READ, MAP_PRIVATE, fd, 0);	
+	buf = mmap(0, fst.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 
 	nWds = *buf;
 	wds = buf + 1;
@@ -170,7 +170,7 @@ int isWord(char* key){
 	a = 0;
 	b = nWds - 1;
 	c = (b+a) / 2;
-	
+
 	while (b >= a) {
 		cmp = strcmp(key, dict + wds[c]);
 		if (cmp < 0) {
@@ -182,7 +182,7 @@ int isWord(char* key){
 		}
 		c = (b+a) / 2;
 	}
-	
+
 	return 0;
 }
 
@@ -191,7 +191,7 @@ int startsWord(char* prefix){
 	a = 0;
 	b = nWds - 1;
 	c = (b+a) / 2;
-	
+
 	while (b >= a) {
 		cmp = strcmpPrefix(prefix, dict + wds[c]);
 		if (cmp < 0) {
@@ -203,6 +203,6 @@ int startsWord(char* prefix){
 		}
 		c = (b+a) / 2;
 	}
-	
+
 	return 0;
 }
