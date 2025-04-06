@@ -1,33 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useRef, useState } from 'react'
 import './App.css'
+import { BoggleUI } from './BoggleUI';
+import React from 'react';
 
 function App() {
   const [count, setCount] = useState(0)
+  const [board, setBoard] = useState<string|null>(null);
+
+  const textBox = useRef<HTMLInputElement | null>(null);
+
+  const findWords = () => {
+    const text = textBox.current?.value;
+    if (text && text.length == 16) {
+      // TODO: qu; add validation message
+      setBoard(text);
+    }
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>Online Boggle Solver</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div>
+        <input type="text" width={20} placeholder='abcdefghijklmnop' ref={textBox} />
+        <button onClick={findWords}>Find Words</button>
+        <React.Suspense fallback={<div>Loading...</div>}>
+          {board ? <BoggleUI wordlist="/wordlists/enable2k.txt" board={board} multiboggle={false} /> : null}
+        </React.Suspense>
+      </div>
     </>
   )
 }

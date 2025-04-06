@@ -9,11 +9,37 @@
   <body>
     <div id="root"></div>
     <script>
+      let moduleResolve, moduleReject;
+      window.modulePromise = new Promise((resolve, reject) => {
+        moduleResolve = resolve;
+        moduleReject = reject;
+      });
       var Module = {
         onRuntimeInitialized: function() {
           console.log('onRuntimeInitialized');
+          moduleResolve(Module);
         }
       };
+      window.wordlists = {};
+      async function loadWordlist(networkPath) {
+        if (window.wordlists[networkPath]) {
+          return window.wordlists[networkPath];
+        }
+        const load = async () => {
+          const wasmPath = networkPath.split('/').at(-1);
+          const wordlistReq = await fetch(networkPath);
+          const bytes = await wordlistReq.arrayBuffer();
+          console.log('Loaded', bytes.byteLength, 'bytes');
+          const data = new Uint8Array(bytes);
+          let startMs = performance.now();
+          const m = await window.modulePromise;
+          m['FS_createDataFile']('/', wasmPath, data, true, true, true);
+          return '/' + wasmPath;
+        };
+        // TODO: optimistically create trie
+        return window.wordlists[networkPath] = load();
+      }
+      loadWordlist('/wordlists/enable2k.txt');
     </script>
     <script src="/wasm/boggle.js"></script>
     <script type="module" src="/src/main.tsx"></script>

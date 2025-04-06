@@ -9,6 +9,8 @@ export default tseslint.config(
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
+    // These are generated files that we don't want to lint.
+    ignores: ['src/boggle-wasm.ts'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
