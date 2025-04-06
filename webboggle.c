@@ -37,12 +37,12 @@ int main(int argc, char** argv)
 {
 	if (argc != 3) usage_and_die(argc, argv);
 
-        // need either 16 non-qs, or 17 letters with one 'qu'.
-        int board_len = strlen(argv[2]);
-        char* qu = strstr(argv[2], "qu");
-        char* qu2 = qu ? strstr(qu + 1, "qu") : NULL;
-        if (!((board_len == 16 && !qu) || (board_len == 17 && qu && !qu2))) {
-        	usage_and_die(argc, argv);
+	// need either 16 non-qs, or 17 letters with one 'qu'.
+	int board_len = strlen(argv[2]);
+	char* qu = strstr(argv[2], "qu");
+	char* qu2 = qu ? strstr(qu + 1, "qu") : NULL;
+	if (!((board_len == 16 && !qu) || (board_len == 17 && qu && !qu2))) {
+		usage_and_die(argc, argv);
 	}
 
 	loadDict(argv[1]);
