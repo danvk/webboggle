@@ -17,21 +17,41 @@ interface BoggleWordListProps {
   setSelectedIndex: (index: number | null) => void;
 }
 
+type SortOrder = "alphabetical" | "length";
+
 function BoggleWordList(props: BoggleWordListProps) {
   const { words, selectedIndex, setSelectedIndex } = props;
+  const [sortOrder, setSortOrder] = React.useState<SortOrder>("alphabetical");
+  const displayWords = words.map((w, i) => ({
+    i,
+    word: w.word.replace(/q/g, "qu"),
+  }));
+  if (sortOrder == "length") {
+    displayWords.sort((w1, w2) => w2.word.length - w1.word.length);
+  }
+
   return (
-    <ol>
-      {words.map((word, i) => (
-        <li
-          key={i}
-          // TODO: this creates a ton of functions
-          onMouseOver={() => setSelectedIndex(i)}
-          className={classNames({ selected: i === selectedIndex })}
-        >
-          {word.word.replace(/q/g, "qu")}
-        </li>
-      ))}
-    </ol>
+    <>
+      <select
+        value={sortOrder}
+        onChange={(e) => setSortOrder(e.currentTarget.value as SortOrder)}
+      >
+        <option value="alphabetical">Alphabetical</option>
+        <option value="length">Length</option>
+      </select>
+      <ol>
+        {displayWords.map((word) => (
+          <li
+            key={word.i}
+            // TODO: this creates a ton of functions
+            onMouseOver={() => setSelectedIndex(word.i)}
+            className={classNames({ selected: word.i === selectedIndex })}
+          >
+            {word.word}
+          </li>
+        ))}
+      </ol>
+    </>
   );
 }
 

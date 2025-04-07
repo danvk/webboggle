@@ -5,8 +5,18 @@ import React from "react";
 import "./App.css";
 import "./Boggle.css";
 
+const WORDLISTS = [
+  { display: "ENABLE2K", path: "/wordlists/enable2k.txt" },
+  { display: "NASPA23", path: "/wordlists/naspa2023.txt" },
+  { display: "OSPD5", path: "/wordlists/ospd5.txt" },
+  { display: "SOWPODS", path: "/wordlists/sowpods.txt" },
+  { display: "TWL06", path: "/wordlists/twl06.txt" },
+  { display: "YAWL", path: "/wordlists/yawl.txt" },
+];
+
 function App() {
   const [board, setBoard] = useState<string | null>(null);
+  const [wordlist, setWordlist] = useState<number>(0);
 
   const textBox = useRef<HTMLInputElement | null>(null);
 
@@ -34,12 +44,23 @@ function App() {
             ref={textBox}
           />
           <br />
+          <select
+            value={wordlist}
+            onChange={(e) => setWordlist(Number(e.currentTarget.value))}
+          >
+            {WORDLISTS.map((item, i) => (
+              <option key={i} value={i}>
+                {item.display}
+              </option>
+            ))}
+          </select>
+          <br />
           <button onClick={findWords}>Find Words</button>
         </form>
         <React.Suspense fallback={<div>Loading...</div>}>
           {board ? (
             <BoggleUI
-              wordlist="/wordlists/enable2k.txt"
+              wordlist={WORDLISTS[wordlist].path}
               board={board}
               multiboggle={false}
             />
