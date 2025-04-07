@@ -66,7 +66,7 @@ function BoggleWordList(props: BoggleWordListProps) {
   );
 }
 
-export function BoggleUI(props: BoggleUIProps) {
+export const BoggleUI = React.memo((props: BoggleUIProps) => {
   const { wordlist } = props;
 
   const { data: trie, isLoading, error } = useSWR(wordlist, getTrieForWordlist);
@@ -77,7 +77,7 @@ export function BoggleUI(props: BoggleUIProps) {
     return "Error!";
   }
   return <BoggleUIWithTrie {...props} trie={trie!} />;
-}
+});
 
 function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
   const { board, multiboggle, trie } = props;
