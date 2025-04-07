@@ -99,7 +99,6 @@ function App() {
 
   return (
     <>
-      <h1>Online Boggle Solver</h1>
       <div id="boggle-app">
         <form onSubmit={submitForm}>
           <input

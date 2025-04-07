@@ -24,10 +24,37 @@
   max-width: 450px;
 }
 
-.boggle-board {
-  position: sticky;
-  float: right;
-  top: 20px;
+input, select {
+  font-size: 16px;
+}
+select {
+  margin: 4px 0;
+}
+
+@media (max-width: 640px) {
+  input, select {
+    font-size: 20px;
+  }
+  .boggle-board {
+    background-color: white;
+    position: sticky;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    top: 0px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .boggle-board {
+      background-color: #242424;
+    }
+  }
+}
+
+@media (min-width: 640px) {
+  .boggle-board {
+    position: sticky;
+    float: right;
+    top: 20px;
+  }
 }
 
 .word-list {
@@ -37,6 +64,11 @@
 
 .selected {
   background: lightyellow;
+}
+@media (prefers-color-scheme: dark) {
+  .selected {
+    background: gray;
+  }
 }
 
 ol {

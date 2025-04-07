@@ -49,12 +49,12 @@ function BoggleWordList(props: BoggleWordListProps) {
         <option value="alphabetical">Alphabetical</option>
         <option value="length">Length</option>
       </select>
-      <ol onMouseOut={() => setSelectedIndex(null)}>
+      <ol>
         {displayWords.map((word) => (
           <li
             key={word.i}
             // TODO: this creates a ton of functions
-            onMouseOver={() => setSelectedIndex(word.i)}
+            onMouseEnter={() => setSelectedIndex(word.i)}
             className={classNames({ selected: word.i === selectedIndex })}
           >
             {word.word}
