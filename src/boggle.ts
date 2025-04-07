@@ -11,15 +11,31 @@ export async function getModule(): Promise<MainModule> {
 
 declare const loadWordlist: (networkPath: string) => Promise<string>;
 
+interface CachedTrie {
+  wordlistPath: string;
+  trie: Trie;
+}
+let cachedTrie: CachedTrie | null = null;
+
 export async function getTrieForWordlist(networkPath: string): Promise<Trie> {
   const [module, wordlistPath] = await Promise.all([
     getModule(),
     loadWordlist(networkPath),
   ]);
+  if (cachedTrie?.wordlistPath == wordlistPath) {
+    console.log("using cached trie");
+    return cachedTrie.trie;
+  }
+  if (cachedTrie) {
+    console.log("deleting cached trie");
+    cachedTrie.trie.delete();
+    cachedTrie = null;
+  }
   const startMs = performance.now();
   const trie = module.Trie.CreateFromFile(wordlistPath);
   const elapsedMs = performance.now() - startMs;
   console.log("create trie", elapsedMs, "ms");
+  cachedTrie = { wordlistPath, trie };
   return trie;
 }
 

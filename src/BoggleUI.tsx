@@ -32,7 +32,10 @@ function BoggleWordList(props: BoggleWordListProps) {
     word: w.word.replace(/q/g, "qu"),
   }));
   if (sortOrder == "length") {
-    displayWords.sort((w1, w2) => w2.word.length - w1.word.length);
+    displayWords.sort(
+      (w1, w2) =>
+        w2.word.length - w1.word.length || w1.word.localeCompare(w2.word)
+    );
   } else {
     displayWords.sort((w1, w2) => w1.word.localeCompare(w2.word));
   }
@@ -84,7 +87,7 @@ function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
   );
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
   const selectedPath =
-    selectedIndex !== null ? words[selectedIndex].path : null;
+    selectedIndex !== null ? words[selectedIndex]?.path ?? null : null;
 
   React.useEffect(() => {
     setSelectedIndex(null);
