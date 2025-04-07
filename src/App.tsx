@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent } from "react";
 import { BoggleUI } from "./BoggleUI";
 import React from "react";
 
@@ -7,12 +7,12 @@ import "./Boggle.css";
 import { useLightlyEncodedSearchParams } from "./router";
 
 const WORDLISTS = [
-  { key: "enable2k", display: "ENABLE2K", path: "/wordlists/enable2k.txt" },
-  { key: "naspa23", display: "NASPA23", path: "/wordlists/naspa2023.txt" },
-  { key: "ospd5", display: "OSPD5", path: "/wordlists/ospd5.txt" },
-  { key: "sowpods", display: "SOWPODS", path: "/wordlists/sowpods.txt" },
-  { key: "twl06", display: "TWL06", path: "/wordlists/twl06.txt" },
-  { key: "yawl", display: "YAWL", path: "/wordlists/yawl.txt" },
+  { key: "enable2k", display: "ENABLE2K", path: "wordlists/enable2k.txt" },
+  { key: "naspa23", display: "NASPA23", path: "wordlists/naspa2023.txt" },
+  { key: "ospd5", display: "OSPD5", path: "wordlists/ospd5.txt" },
+  { key: "sowpods", display: "SOWPODS", path: "wordlists/sowpods.txt" },
+  { key: "twl06", display: "TWL06", path: "wordlists/twl06.txt" },
+  { key: "yawl", display: "YAWL", path: "wordlists/yawl.txt" },
 ];
 
 interface UrlState {

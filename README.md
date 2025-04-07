@@ -1,11 +1,33 @@
-# React + TypeScript + Vite
+# Web-based Boggle Solver
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repo wraps a web UI around a WASM build of the code in [hybrid-boggle]. Try it out at [danvk.org/boggle].
 
-Currently, two official plugins are available:
+Quickstart:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+pnpm i
+pnpm dev
+```
+
+To deploy:
+
+```
+pnpm build
+rm -rf ../danvk.github.io/boggle
+cp -r dist ~/github/danvk.github.io/boggle
+```
+
+To update the WASM binary:
+
+```
+cd ../hybrid-boggle
+emcc -lembind -sALLOW_MEMORY_GROWTH -sEXPORTED_FUNCTIONS=FS -sFORCE_FILESYSTEM=1 -o wasm/boggle.js cpp/wasm_boggle.cc cpp/trie.cc --emit-tsd boggle.d.ts
+```
+
+[hybrid-boggle]: https://github.com/danvk/hybrid-boggle/
+[danvk.org/boggle]: https://www.danvk.org/boggle/
+
+(below is leftover stuff from `pnpm create vite app --template react-ts`)
 
 ## Expanding the ESLint configuration
 
