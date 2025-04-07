@@ -25,7 +25,7 @@ function App() {
   return (
     <>
       <h1>Online Boggle Solver</h1>
-      <div>
+      <div id="boggle-app">
         <form onSubmit={submitForm}>
           <input
             type="text"
