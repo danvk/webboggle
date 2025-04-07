@@ -26,7 +26,7 @@ type SortOrder = "alphabetical" | "length";
 
 function BoggleWordList(props: BoggleWordListProps) {
   const { words, selectedIndex, setSelectedIndex } = props;
-  const [sortOrder, setSortOrder] = React.useState<SortOrder>("alphabetical");
+  const [sortOrder, setSortOrder] = React.useState<SortOrder>("length");
   const displayWords = words.map((w, i) => ({
     i,
     word: w.word.replace(/q/g, "qu"),
@@ -49,7 +49,7 @@ function BoggleWordList(props: BoggleWordListProps) {
         <option value="alphabetical">Alphabetical</option>
         <option value="length">Length</option>
       </select>
-      <ol>
+      <ol onMouseOut={() => setSelectedIndex(null)}>
         {displayWords.map((word) => (
           <li
             key={word.i}

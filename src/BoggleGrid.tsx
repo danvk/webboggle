@@ -1,4 +1,6 @@
 import classNames from "classnames";
+import React from "react";
+import { SCORES } from "./boggle";
 
 function parseBoard(board: string) {
   return [
@@ -18,6 +20,10 @@ function indexToCoord(index: number): XY {
   const y = index >> 2;
   const x = index % 4;
   return { x, y };
+}
+
+function coordToIndex({ x, y }: XY) {
+  return 4 * y + x;
 }
 
 interface RowArrowClass {
@@ -48,34 +54,29 @@ function BoggleLetterRow(props: BoggleLetterRowProps) {
     classes[x][a.x > b.x ? "left" : "right"] = true;
   }
   const displayLetters = letters.map(boggleToUpper);
-  const first = selectedPath && indexToCoord(selectedPath[0]);
-  const last =
-    selectedPath && indexToCoord(selectedPath[selectedPath.length - 1]);
-  const xFirst = first?.y === row ? first.x : null;
-  const xLast = last?.y === row ? last.x : null;
+  const first = selectedPath?.[0];
+  const last = selectedPath?.[selectedPath.length - 1];
+  const indices = [0, 1, 2, 3].map((x) => coordToIndex({ x, y: row }));
   return (
     <tr>
-      <td className={classNames({ first: xFirst === 0, last: xLast === 0 })}>
-        <input type="text" value={displayLetters[0]} size={2} readOnly />
-      </td>
-      <td>
-        <div className={classNames("arrow", classes[0])} />
-      </td>
-      <td className={classNames({ first: xFirst === 1, last: xLast === 1 })}>
-        <input type="text" value={displayLetters[1]} size={2} readOnly />
-      </td>
-      <td>
-        <div className={classNames("arrow", classes[1])} />
-      </td>
-      <td className={classNames({ first: xFirst === 2, last: xLast === 2 })}>
-        <input type="text" value={displayLetters[2]} size={2} readOnly />
-      </td>
-      <td>
-        <div className={classNames("arrow", classes[2])} />
-      </td>
-      <td className={classNames({ first: xFirst === 3, last: xLast === 3 })}>
-        <input type="text" value={displayLetters[3]} size={2} readOnly />
-      </td>
+      {[0, 1, 2, 3].map((x) => (
+        <React.Fragment key={x}>
+          <td
+            className={classNames({
+              first: indices[x] === first,
+              last: indices[x] === last,
+              path: selectedPath?.includes(indices[x]),
+            })}
+          >
+            <input type="text" value={displayLetters[x]} size={2} readOnly />
+          </td>
+          {x < 3 ? (
+            <td>
+              <div className={classNames("arrow", classes[x])} />
+            </td>
+          ) : null}
+        </React.Fragment>
+      ))}
     </tr>
   );
 }
@@ -156,38 +157,52 @@ export function BoggleGrid(props: BoggleGridProps) {
   const { board, selectedPath } = props;
   const grid = parseBoard(board);
   const { inRowArrows, betweenRowArrows } = getArrows(selectedPath ?? []);
+  const selectedWord =
+    selectedPath &&
+    selectedPath
+      .map((i) => board[i])
+      .join("")
+      .replace(/q/g, "qu");
 
   return (
-    <table className="boggle-board">
-      <tbody>
-        <BoggleLetterRow
-          row={0}
-          letters={grid[0]}
-          arrows={inRowArrows[0]}
-          selectedPath={selectedPath}
-        />
-        <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[0]} />
-        <BoggleLetterRow
-          row={1}
-          letters={grid[1]}
-          arrows={inRowArrows[1]}
-          selectedPath={selectedPath}
-        />
-        <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[1]} />
-        <BoggleLetterRow
-          row={2}
-          letters={grid[2]}
-          arrows={inRowArrows[2]}
-          selectedPath={selectedPath}
-        />
-        <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[2]} />
-        <BoggleLetterRow
-          row={3}
-          letters={grid[3]}
-          arrows={inRowArrows[3]}
-          selectedPath={selectedPath}
-        />
-      </tbody>
-    </table>
+    <div className="boggle-board">
+      <table>
+        <tbody>
+          <BoggleLetterRow
+            row={0}
+            letters={grid[0]}
+            arrows={inRowArrows[0]}
+            selectedPath={selectedPath}
+          />
+          <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[0]} />
+          <BoggleLetterRow
+            row={1}
+            letters={grid[1]}
+            arrows={inRowArrows[1]}
+            selectedPath={selectedPath}
+          />
+          <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[1]} />
+          <BoggleLetterRow
+            row={2}
+            letters={grid[2]}
+            arrows={inRowArrows[2]}
+            selectedPath={selectedPath}
+          />
+          <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[2]} />
+          <BoggleLetterRow
+            row={3}
+            letters={grid[3]}
+            arrows={inRowArrows[3]}
+            selectedPath={selectedPath}
+          />
+        </tbody>
+      </table>
+      {selectedWord ? (
+        <div className="selected-word">
+          <strong>{selectedWord}</strong>: {SCORES[selectedWord.length]} point
+          {SCORES[selectedWord.length] > 1 ? "s" : ""}
+        </div>
+      ) : null}
+    </div>
   );
 }
