@@ -1,6 +1,11 @@
 import React from "react";
 import useSWR from "swr";
-import { BoggleWord, getTrieForWordlist, getWordsOnBoard } from "./boggle";
+import {
+  BoggleWord,
+  getTrieForWordlist,
+  getWordsOnBoard,
+  SCORES,
+} from "./boggle";
 import { Trie } from "./boggle-wasm";
 import { BoggleGrid } from "./BoggleGrid";
 import classNames from "classnames";
@@ -50,6 +55,7 @@ function BoggleWordList(props: BoggleWordListProps) {
             className={classNames({ selected: word.i === selectedIndex })}
           >
             {word.word}
+            {word.word.length > 4 ? ` (${SCORES[word.word.length]})` : null}
           </li>
         ))}
       </ol>
