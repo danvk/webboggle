@@ -2,6 +2,7 @@ import React from "react";
 import useSWR from "swr";
 import { BoggleWord, getTrieForWordlist, getWordsOnBoard } from "./boggle";
 import { Trie } from "./boggle-wasm";
+import { BoggleGrid } from "./BoggleGrid";
 
 export interface BoggleUIProps {
   wordlist: string;
@@ -41,7 +42,7 @@ function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
 
   return (
     <div>
-      <div>{board}</div>
+      <BoggleGrid board={board} />
       <div>{points} points</div>
       <BoggleWordList words={words} />
     </div>
