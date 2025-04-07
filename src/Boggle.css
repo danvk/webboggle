@@ -1,5 +1,5 @@
 /* CSS arithmetic! */
-.arrow { width: 15px; height: 15px; }
+.arrow { width: 15px; height: 15px; display: inline-block; }
 
 .arrow.up    { background-image: url(arrows/up.png); }
 .arrow.down  { background-image: url(arrows/down.png); }
@@ -21,9 +21,9 @@
   min-height: 300px;
 }
 .boggle-board {
-  position: fixed;
-  left: 400px;
-  top: 120px;
+  position: sticky;
+  left: 200px;
+  top: 20px;
 }
 
 .word-list {
@@ -33,4 +33,23 @@
 
 .selected {
   background: lightyellow;
+}
+
+ol {
+  max-width: 200px;
+}
+
+.boggle-board input {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.boggle-board tr {
+  line-height: 1;
+}
+
+.arrow-row td {
+  text-align: center;
 }

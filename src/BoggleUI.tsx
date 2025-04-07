@@ -28,7 +28,7 @@ function BoggleWordList(props: BoggleWordListProps) {
           onMouseOver={() => setSelectedIndex(i)}
           className={classNames({ selected: i === selectedIndex })}
         >
-          {word.word}
+          {word.word.replace(/q/g, "qu")}
         </li>
       ))}
     </ol>

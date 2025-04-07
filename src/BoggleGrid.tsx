@@ -31,6 +31,13 @@ interface RowArrowClass {
   right?: boolean;
 }
 
+function boggleToUpper(letter: string) {
+  if (letter == "q" || letter == "Q") {
+    return "Qu";
+  }
+  return letter.toUpperCase();
+}
+
 function BoggleLetterRow(props: BoggleLetterRowProps) {
   const { row, letters, arrows } = props;
   const classes: RowArrowClass[] = Array(3)
@@ -40,28 +47,29 @@ function BoggleLetterRow(props: BoggleLetterRowProps) {
     const x = Math.min(a.x, b.x);
     classes[x][a.x > b.x ? "left" : "right"] = true;
   }
+  const displayLetters = letters.map(boggleToUpper);
   return (
     <tr>
       <td>
-        <input type="text" value={letters[0]} size={2} readOnly />
+        <input type="text" value={displayLetters[0]} size={2} readOnly />
       </td>
       <td>
         <div className={classNames("arrow", classes[0])} />
       </td>
       <td>
-        <input type="text" value={letters[1]} size={2} readOnly />
+        <input type="text" value={displayLetters[1]} size={2} readOnly />
       </td>
       <td>
         <div className={classNames("arrow", classes[1])} />
       </td>
       <td>
-        <input type="text" value={letters[2]} size={2} readOnly />
+        <input type="text" value={displayLetters[2]} size={2} readOnly />
       </td>
       <td>
         <div className={classNames("arrow", classes[2])} />
       </td>
       <td>
-        <input type="text" value={letters[3]} size={2} readOnly />
+        <input type="text" value={displayLetters[3]} size={2} readOnly />
       </td>
     </tr>
   );
@@ -92,7 +100,7 @@ function BoggleArrowRow(props: BoggleArrowRowProps) {
     }
   }
   return (
-    <tr>
+    <tr className="arrow-row">
       <td>
         <div className={classNames("arrow", vertClasses[0])} />
       </td>

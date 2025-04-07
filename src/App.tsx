@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { BoggleUI } from "./BoggleUI";
 import React from "react";
 
@@ -17,18 +17,25 @@ function App() {
       setBoard(text);
     }
   };
+  const submitForm = (e: FormEvent) => {
+    e.preventDefault();
+    findWords();
+  };
 
   return (
     <>
       <h1>Online Boggle Solver</h1>
       <div>
-        <input
-          type="text"
-          width={20}
-          placeholder="abcdefghijklmnop"
-          ref={textBox}
-        />
-        <button onClick={findWords}>Find Words</button>
+        <form onSubmit={submitForm}>
+          <input
+            type="text"
+            width={20}
+            placeholder="abcdefghijklmnop"
+            ref={textBox}
+          />
+          <br />
+          <button onClick={findWords}>Find Words</button>
+        </form>
         <React.Suspense fallback={<div>Loading...</div>}>
           {board ? (
             <BoggleUI
