@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { BoggleWord, getTrieForWordlist, getWordsOnBoard } from "./boggle";
 import { Trie } from "./boggle-wasm";
 import { BoggleGrid } from "./BoggleGrid";
+import classNames from "classnames";
 
 export interface BoggleUIProps {
   wordlist: string;
@@ -10,11 +11,24 @@ export interface BoggleUIProps {
   multiboggle: boolean;
 }
 
-function BoggleWordList(props: { words: BoggleWord[] }) {
+interface BoggleWordListProps {
+  words: BoggleWord[];
+  selectedIndex: number | null;
+  setSelectedIndex: (index: number | null) => void;
+}
+
+function BoggleWordList(props: BoggleWordListProps) {
+  const { words, selectedIndex, setSelectedIndex } = props;
   return (
     <ol>
-      {props.words.map((word, i) => (
-        <li key={i}>{word.word}</li>
+      {words.map((word, i) => (
+        <li
+          key={i}
+          onMouseOver={() => setSelectedIndex(i)}
+          className={classNames({ selected: i === selectedIndex })}
+        >
+          {word.word}
+        </li>
       ))}
     </ol>
   );
@@ -39,12 +53,19 @@ function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
     () => getWordsOnBoard(trie, board, multiboggle),
     [board, multiboggle, trie]
   );
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+  const selectedPath =
+    selectedIndex !== null ? words[selectedIndex].path : null;
 
   return (
     <div>
-      <BoggleGrid board={board} />
+      <BoggleGrid board={board} selectedPath={selectedPath} />
       <div>{points} points</div>
-      <BoggleWordList words={words} />
+      <BoggleWordList
+        words={words}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
     </div>
   );
 }

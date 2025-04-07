@@ -28,6 +28,7 @@ function BoggleLetterRow(props: BoggleLetterRowProps) {
 
 export interface BoggleGridProps {
   board: string;
+  selectedPath: number[] | null;
 }
 
 export function BoggleGrid(props: BoggleGridProps) {

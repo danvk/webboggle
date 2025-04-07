@@ -1,0 +1,36 @@
+/* CSS arithmetic! */
+.arrow { width: 15px; height: 15px; }
+
+.arrow.up    { background-image: url(arrows/up.png); }
+.arrow.down  { background-image: url(arrows/down.png); }
+.arrow.left  { background-image: url(arrows/left.png); }
+.arrow.right { background-image: url(arrows/right.png); }
+
+.arrow.up.left     { background-image: url(arrows/upleft.png); }
+.arrow.down.left   { background-image: url(arrows/downleft.png); }
+.arrow.up.right    { background-image: url(arrows/upright.png); }
+.arrow.down.right  { background-image: url(arrows/downright.png); }
+
+.arrow.left.right.up   { background-image: url(arrows/upleftright.png); }
+.arrow.left.right.down { background-image: url(arrows/downleftright.png); }
+.arrow.up.down.left    { background-image: url(arrows/leftupdown.png); }
+.arrow.up.down.right   { background-image: url(arrows/rightupdown.png); }
+
+/* General styles */
+#boggle-page {
+  min-height: 300px;
+}
+.boggle-board {
+  position: fixed;
+  left: 400px;
+  top: 120px;
+}
+
+.word-list {
+  display: table;
+  min-width: 200px;
+}
+
+.selected {
+  background: lightyellow;
+}

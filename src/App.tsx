@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
-import "./App.css";
 import { BoggleUI } from "./BoggleUI";
 import React from "react";
+
+import "./App.css";
+import "./Boggle.css";
 
 function App() {
   const [board, setBoard] = useState<string | null>(null);
