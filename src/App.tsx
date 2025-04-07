@@ -17,6 +17,7 @@ const WORDLISTS = [
 function App() {
   const [board, setBoard] = useState<string | null>(null);
   const [wordlist, setWordlist] = useState<number>(0);
+  const [multiboggle, setMultiboggle] = useState(false);
 
   const textBox = useRef<HTMLInputElement | null>(null);
 
@@ -55,6 +56,15 @@ function App() {
             ))}
           </select>
           <br />
+          <input
+            id="multiboggle"
+            type="checkbox"
+            checked={multiboggle}
+            onChange={(e) => setMultiboggle(e.currentTarget.checked)}
+          />
+          {" "}
+          <label htmlFor="multiboggle">Allow Repeats ("multiboggle")</label>
+          <br />
           <button onClick={findWords}>Find Words</button>
         </form>
         <React.Suspense fallback={<div>Loading...</div>}>
@@ -62,7 +72,7 @@ function App() {
             <BoggleUI
               wordlist={WORDLISTS[wordlist].path}
               board={board}
-              multiboggle={false}
+              multiboggle={multiboggle}
             />
           ) : null}
         </React.Suspense>
