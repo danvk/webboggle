@@ -53,7 +53,8 @@ export function getWordsOnBoard(
       .fill(null)
       .map((_, i) => path.get(i)) as number[];
     const word = indices.map((i) => board[i]).join("");
-    score += scores[path.size()];
+    const numQ = indices.filter((i) => board[i] === "q").length;
+    score += scores[path.size() + numQ];
     boggleWords.push({ word, path: indices });
   }
   console.log("Score: ", score);
