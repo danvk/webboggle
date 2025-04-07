@@ -20,12 +20,6 @@ function indexToCoord(index: number): XY {
   return { x, y };
 }
 
-export interface BoggleLetterRowProps {
-  row: number;
-  letters: string[];
-  arrows: [XY, XY][];
-}
-
 interface RowArrowClass {
   left?: boolean;
   right?: boolean;
@@ -38,8 +32,14 @@ function boggleToUpper(letter: string) {
   return letter.toUpperCase();
 }
 
+export interface BoggleLetterRowProps {
+  row: number;
+  letters: string[];
+  arrows: [XY, XY][];
+  selectedPath: number[] | null;
+}
 function BoggleLetterRow(props: BoggleLetterRowProps) {
-  const { row, letters, arrows } = props;
+  const { row, letters, arrows, selectedPath } = props;
   const classes: RowArrowClass[] = Array(3)
     .fill(null)
     .map(() => ({}));
@@ -48,27 +48,32 @@ function BoggleLetterRow(props: BoggleLetterRowProps) {
     classes[x][a.x > b.x ? "left" : "right"] = true;
   }
   const displayLetters = letters.map(boggleToUpper);
+  const first = selectedPath && indexToCoord(selectedPath[0]);
+  const last =
+    selectedPath && indexToCoord(selectedPath[selectedPath.length - 1]);
+  const xFirst = first?.y === row ? first.x : null;
+  const xLast = last?.y === row ? last.x : null;
   return (
     <tr>
-      <td>
+      <td className={classNames({ first: xFirst === 0, last: xLast === 0 })}>
         <input type="text" value={displayLetters[0]} size={2} readOnly />
       </td>
       <td>
         <div className={classNames("arrow", classes[0])} />
       </td>
-      <td>
+      <td className={classNames({ first: xFirst === 1, last: xLast === 1 })}>
         <input type="text" value={displayLetters[1]} size={2} readOnly />
       </td>
       <td>
         <div className={classNames("arrow", classes[1])} />
       </td>
-      <td>
+      <td className={classNames({ first: xFirst === 2, last: xLast === 2 })}>
         <input type="text" value={displayLetters[2]} size={2} readOnly />
       </td>
       <td>
         <div className={classNames("arrow", classes[2])} />
       </td>
-      <td>
+      <td className={classNames({ first: xFirst === 3, last: xLast === 3 })}>
         <input type="text" value={displayLetters[3]} size={2} readOnly />
       </td>
     </tr>
@@ -155,13 +160,33 @@ export function BoggleGrid(props: BoggleGridProps) {
   return (
     <table className="boggle-board">
       <tbody>
-        <BoggleLetterRow row={0} letters={grid[0]} arrows={inRowArrows[0]} />
+        <BoggleLetterRow
+          row={0}
+          letters={grid[0]}
+          arrows={inRowArrows[0]}
+          selectedPath={selectedPath}
+        />
         <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[0]} />
-        <BoggleLetterRow row={1} letters={grid[1]} arrows={inRowArrows[1]} />
+        <BoggleLetterRow
+          row={1}
+          letters={grid[1]}
+          arrows={inRowArrows[1]}
+          selectedPath={selectedPath}
+        />
         <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[1]} />
-        <BoggleLetterRow row={2} letters={grid[2]} arrows={inRowArrows[2]} />
+        <BoggleLetterRow
+          row={2}
+          letters={grid[2]}
+          arrows={inRowArrows[2]}
+          selectedPath={selectedPath}
+        />
         <BoggleArrowRow rowAbove={0} arrows={betweenRowArrows[2]} />
-        <BoggleLetterRow row={3} letters={grid[3]} arrows={inRowArrows[3]} />
+        <BoggleLetterRow
+          row={3}
+          letters={grid[3]}
+          arrows={inRowArrows[3]}
+          selectedPath={selectedPath}
+        />
       </tbody>
     </table>
   );

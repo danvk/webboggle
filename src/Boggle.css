@@ -50,6 +50,13 @@ ol {
   text-align: center;
 }
 
+td.first input {
+  box-shadow: green 0 0 4px;
+}
+td.last input {
+  box-shadow: red 0 0 4px;
+}
+
 .boggle-board tr {
   line-height: 1;
 }
