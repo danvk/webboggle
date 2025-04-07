@@ -24,6 +24,7 @@ function BoggleWordList(props: BoggleWordListProps) {
       {words.map((word, i) => (
         <li
           key={i}
+          // TODO: this creates a ton of functions
           onMouseOver={() => setSelectedIndex(i)}
           className={classNames({ selected: i === selectedIndex })}
         >
@@ -56,6 +57,10 @@ function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
   const selectedPath =
     selectedIndex !== null ? words[selectedIndex].path : null;
+
+  React.useEffect(() => {
+    setSelectedIndex(null);
+  }, [board, multiboggle, trie]);
 
   return (
     <div>
