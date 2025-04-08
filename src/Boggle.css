@@ -1,0 +1,127 @@
+/* CSS arithmetic! */
+.arrow {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-size: 15px 15px;
+}
+
+.arrow.left  { background-image: url(/arrows/left.svg); }
+.arrow.up    { background-image: url(/arrows/left.svg); transform: rotate(90deg);}
+.arrow.down  { background-image: url(/arrows/left.svg); transform: rotate(-90deg);}
+.arrow.right { background-image: url(/arrows/left.svg); transform: rotate(180deg); }
+
+.arrow.up.left     { background-image: url(/arrows/left.svg); transform: rotate(45deg); }
+.arrow.down.left   { background-image: url(/arrows/left.svg); transform: rotate(-45deg); }
+.arrow.up.right    { background-image: url(/arrows/left.svg); transform: rotate(135deg); }
+.arrow.down.right  { background-image: url(/arrows/left.svg); transform: rotate(-135deg); }
+
+.arrow.up.down.left    { background-image: url(/arrows/leftupdown.svg); transform:none; }
+.arrow.up.down.right   { background-image: url(/arrows/leftupdown.svg); transform:rotate(180deg); }
+.arrow.left.right.up   { background-image: url(/arrows/leftupdown.svg); transform:rotate(90deg); }
+.arrow.left.right.down { background-image: url(/arrows/leftupdown.svg); transform:rotate(-90deg); }
+
+@media (prefers-color-scheme: dark) {
+  .arrow {
+    filter: invert(1);
+  }
+}
+
+/* General styles */
+#boggle-page {
+  min-height: 300px;
+}
+#boggle-app {
+  max-width: 450px;
+}
+
+input, select {
+  font-size: 16px;
+}
+select {
+  margin: 4px 0;
+}
+
+@media (max-width: 640px) {
+  input, select {
+    font-size: 20px;
+  }
+  .boggle-board {
+    background-color: white;
+    position: sticky;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    top: 0px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .boggle-board {
+      background-color: #242424;
+    }
+  }
+}
+
+@media (min-width: 640px) {
+  .boggle-board {
+    position: sticky;
+    float: right;
+    top: 20px;
+  }
+}
+
+.word-list {
+  display: table;
+  min-width: 200px;
+}
+
+.selected {
+  background: lightyellow;
+}
+@media (prefers-color-scheme: dark) {
+  .selected {
+    background: gray;
+  }
+}
+
+ol {
+  max-width: 150px;
+}
+
+.boggle-board input {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  border-color: rgba(118, 118, 118, 0.5), rgba(133, 133, 133, 0.5);
+}
+
+td.path input {
+  background-color: lightyellow;
+}
+@media (prefers-color-scheme: dark) {
+  td.path input {
+    background-color: gray;
+  }
+}
+td.first input {
+  box-shadow: rgba(0, 128, 0, 0.5) 0 0 4px;
+  border: 2px solid rgba(0, 128, 0, 0.75);
+}
+/*
+td.last input {
+  box-shadow: rgba(128, 0, 0, 0.5) 0 0 4px;
+  border: 2px solid rgba(128, 0, 0, 0.5);
+}
+*/
+
+.boggle-board tr {
+  line-height: 1;
+}
+
+.arrow-row td {
+  text-align: center;
+}
+
+.selected-word {
+  margin-top: 0.5em;
+  margin-left: 4px;
+}

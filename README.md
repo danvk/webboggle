@@ -1,78 +1,76 @@
-Fast one-off Boggle solver, great for building web UIs.
+# Web-based Boggle Solver
 
-The goal is to minimize the time to get all the words on a board, including
-initialization time.
+This repo wraps a web UI around a WASM build of the code in [hybrid-boggle]. Try it out at [danvk.org/boggle].
 
-To get going:
-
-    make clean
-    make all
-    ./makemm scrabble-words scrabble-words.mmapped
-
-The to find the words on a board:
-
-    $ ./webboggle scrabble-words.mmapped abcdefghijklmnop
-    fie 11 02 01
-    fin 11 02 13
-    fink 11 02 13 22
-    fino 11 02 13 23
-    glop 21 32 23 33
-    ink 02 13 22
-    jin 12 02 13
-    jink 12 02 13 22
-    knife 22 13 02 11 01
-    knop 22 13 23 33
-    kop 22 23 33
-    lop 32 23 33
-    mink 03 02 13 22
-    nim 13 02 03
-    plonk 33 32 23 13 22
-    pol 33 23 32
-
-The numbers are coordinates on the board, e.g. `11` = 2nd cell from left, 2nd
-cell from top.
-
-The idea is that this is really fast:
-
-    $ time ./webboggle scrabble-words.mmapped abcdefghijklmnop > /dev/null
-    0.00s user 0.00s system 60% cpu 0.004 total
-
-i.e. 4ms to load the dictionary and find all the words.
-
-REST Server
------------
-
-There's a simple Flask server included which demonstrates how this might be
-used as part of a web page.
-
-    $ ./server.py
+Quickstart:
 
 ```
-$ curl 'http://localhost:5000/abcdefghijklmnop'
+pnpm i
+pnpm dev
 ```
 
-```json
-{
-    "fie": "11 02 01",
-    "fin": "11 02 13",
-    "fink": "11 02 13 22",
-    "fino": "11 02 13 23",
-    "glop": "21 32 23 33",
-    "ink": "02 13 22",
-    "jin": "12 02 13",
-    "jink": "12 02 13 22",
-    "knife": "22 13 02 11 01",
-    "knop": "22 13 23 33",
-    "kop": "22 23 33",
-    "lop": "32 23 33",
-    "mink": "03 02 13 22",
-    "nim": "13 02 03",
-    "plonk": "33 32 23 13 22",
-    "pol": "33 23 32"
-}
+To deploy:
+
+```
+pnpm build
+rm -rf ../danvk.github.io/boggle
+cp -r dist ~/github/danvk.github.io/boggle
 ```
 
-To deploy, you need to configure the Heroku multi buildpack (we need Python &
-C):
+To update the WASM binary:
 
-    heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
+```
+cd ../hybrid-boggle
+emcc -lembind -sALLOW_MEMORY_GROWTH -sEXPORTED_FUNCTIONS=FS -sFORCE_FILESYSTEM=1 -o wasm/boggle.js cpp/wasm_boggle.cc cpp/trie.cc --emit-tsd boggle.d.ts
+```
+
+[hybrid-boggle]: https://github.com/danvk/hybrid-boggle/
+[danvk.org/boggle]: https://www.danvk.org/boggle/
+
+(below is leftover stuff from `pnpm create vite app --template react-ts`)
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
