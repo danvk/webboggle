@@ -96,7 +96,9 @@ function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
   return (
     <div>
       <BoggleGrid board={board} selectedPath={selectedPath} />
-      <div>{points} points</div>
+      <div>
+        {points} points, {words.length} words
+      </div>
       <BoggleWordList
         words={words}
         selectedIndex={selectedIndex}

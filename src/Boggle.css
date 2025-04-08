@@ -95,8 +95,12 @@ ol {
 }
 
 td.path input {
-  box-shadow: rgba(0, 0, 0, 0.5) 0 0 4px;
-  border-color: rgba(0, 0, 0, 0.5);
+  background-color: lightyellow;
+}
+@media (prefers-color-scheme: dark) {
+  td.path input {
+    background-color: gray;
+  }
 }
 td.first input {
   box-shadow: rgba(0, 128, 0, 0.5) 0 0 4px;
