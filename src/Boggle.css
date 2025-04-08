@@ -1,20 +1,31 @@
 /* CSS arithmetic! */
-.arrow { width: 15px; height: 15px; display: inline-block; }
+.arrow {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-size: 15px 15px;
+}
 
-.arrow.up    { background-image: url(/arrows/up.png); }
-.arrow.down  { background-image: url(/arrows/down.png); }
-.arrow.left  { background-image: url(/arrows/left.png); }
-.arrow.right { background-image: url(/arrows/right.png); }
+.arrow.left  { background-image: url(/arrows/left.svg); }
+.arrow.up    { background-image: url(/arrows/left.svg); transform: rotate(90deg);}
+.arrow.down  { background-image: url(/arrows/left.svg); transform: rotate(-90deg);}
+.arrow.right { background-image: url(/arrows/left.svg); transform: rotate(180deg); }
 
-.arrow.up.left     { background-image: url(/arrows/upleft.png); }
-.arrow.down.left   { background-image: url(/arrows/downleft.png); }
-.arrow.up.right    { background-image: url(/arrows/upright.png); }
-.arrow.down.right  { background-image: url(/arrows/downright.png); }
+.arrow.up.left     { background-image: url(/arrows/left.svg); transform: rotate(45deg); }
+.arrow.down.left   { background-image: url(/arrows/left.svg); transform: rotate(-45deg); }
+.arrow.up.right    { background-image: url(/arrows/left.svg); transform: rotate(135deg); }
+.arrow.down.right  { background-image: url(/arrows/left.svg); transform: rotate(-135deg); }
 
-.arrow.left.right.up   { background-image: url(/arrows/upleftright.png); }
-.arrow.left.right.down { background-image: url(/arrows/downleftright.png); }
-.arrow.up.down.left    { background-image: url(/arrows/leftupdown.png); }
-.arrow.up.down.right   { background-image: url(/arrows/rightupdown.png); }
+.arrow.up.down.left    { background-image: url(/arrows/leftupdown.svg); transform:none; }
+.arrow.up.down.right   { background-image: url(/arrows/leftupdown.svg); transform:rotate(180deg); }
+.arrow.left.right.up   { background-image: url(/arrows/leftupdown.svg); transform:rotate(90deg); }
+.arrow.left.right.down { background-image: url(/arrows/leftupdown.svg); transform:rotate(-90deg); }
+
+@media (prefers-color-scheme: dark) {
+  .arrow {
+    filter: invert(1);
+  }
+}
 
 /* General styles */
 #boggle-page {
