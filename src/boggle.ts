@@ -75,3 +75,32 @@ export function getWordsOnBoard(
 
   return [score, boggleWords];
 }
+
+export function makeBoard44(board: string) {
+  if (board.length == 16) {
+    return board;
+  } else if (board.length == 12) {
+    const out = Array(16).fill(".");
+    for (let i = 0; i < board.length; i++) {
+      const x = i >> 2;
+      const y = i % 4;
+      out[4 * y + x] = board.charAt(i);
+    }
+    return out.join("");
+  } else if (board.length == 9) {
+    return (
+      board.slice(0, 3) +
+      "." +
+      board.slice(3, 6) +
+      "." +
+      board.slice(6, 9) +
+      "." +
+      "...."
+    );
+  }
+  throw new Error("Invalid board length");
+}
+
+export function isValidBoard(board: string) {
+  return board.length === 9 || board.length === 12 || board.length === 16;
+}

@@ -4,6 +4,7 @@ import {
   BoggleWord,
   getTrieForWordlist,
   getWordsOnBoard,
+  makeBoard44,
   SCORES,
 } from "./boggle";
 import { Trie } from "./boggle-wasm";
@@ -67,8 +68,9 @@ function BoggleWordList(props: BoggleWordListProps) {
 }
 
 export const BoggleUI = React.memo((props: BoggleUIProps) => {
-  const { wordlist } = props;
+  const { board, wordlist } = props;
 
+  const board44 = makeBoard44(board);
   const { data: trie, isLoading, error } = useSWR(wordlist, getTrieForWordlist);
 
   if (isLoading) return "Loading...";
@@ -76,7 +78,7 @@ export const BoggleUI = React.memo((props: BoggleUIProps) => {
     console.error(error);
     return "Error!";
   }
-  return <BoggleUIWithTrie {...props} trie={trie!} />;
+  return <BoggleUIWithTrie {...props} trie={trie!} board={board44} />;
 });
 
 function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
