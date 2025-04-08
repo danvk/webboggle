@@ -5,6 +5,7 @@ import React from "react";
 import "./App.css";
 import "./Boggle.css";
 import { useLightlyEncodedSearchParams } from "./router";
+import { isValidBoard } from "./boggle";
 
 const WORDLISTS = [
   { key: "enable2k", display: "ENABLE2K", path: "wordlists/enable2k.txt" },
@@ -80,8 +81,8 @@ function App() {
 
   const findWords = () => {
     const text = transientBoard;
-    if (text && text.length == 16) {
-      // TODO: qu; add validation message
+    if (text && isValidBoard(text)) {
+      // TODO: add validation message
       setUrlState({ ...urlState, board: text });
     }
   };
