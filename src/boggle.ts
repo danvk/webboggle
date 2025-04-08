@@ -23,11 +23,9 @@ export async function getTrieForWordlist(networkPath: string): Promise<Trie> {
     loadWordlist(networkPath),
   ]);
   if (cachedTrie?.wordlistPath == wordlistPath) {
-    console.log("using cached trie");
     return cachedTrie.trie;
   }
   if (cachedTrie) {
-    console.log("deleting cached trie");
     cachedTrie.trie.delete();
     cachedTrie = null;
   }
