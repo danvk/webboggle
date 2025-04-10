@@ -202,7 +202,9 @@ export function BoggleGrid(props: BoggleGridProps) {
           <strong>{selectedWord}</strong>: {SCORES[selectedWord.length]} point
           {SCORES[selectedWord.length] > 1 ? "s" : ""}
         </div>
-      ) : null}
+      ) : (
+        <div className="selected-word">{" "}</div>
+      )}
     </div>
   );
 }

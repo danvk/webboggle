@@ -87,6 +87,7 @@ ol {
 }
 
 .boggle-board input {
+  width: 35px;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-size: 24px;
   font-weight: 400;
