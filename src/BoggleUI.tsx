@@ -66,7 +66,6 @@ function BoggleWordList(props: BoggleWordListProps) {
           <li
             key={word.i}
             data-index={word.i}
-            // TODO: this creates a ton of functions
             onMouseEnter={handleMouseEnter}
             className={classNames({ selected: word.i === selectedIndex })}
           >

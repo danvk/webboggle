@@ -121,7 +121,6 @@ function App() {
     const oldDims = urlState.dims;
     const newDims = Number(newDimsStr) as 33 | 44 | 55;
     const newBoard = adjustBoard(urlState.board, oldDims, newDims);
-    console.log(board, "->", newBoard);
     setUrlState({ ...urlState, board: newBoard, dims: newDims });
   };
 
