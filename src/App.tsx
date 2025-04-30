@@ -5,7 +5,7 @@ import React from "react";
 import "./App.css";
 import "./Boggle.css";
 import { useLightlyEncodedSearchParams } from "./router";
-import { isValidBoard } from "./boggle";
+import { adjustBoard, isValidBoard } from "./boggle";
 
 const WORDLISTS = [
   { key: "enable2k", display: "ENABLE2K", path: "wordlists/enable2k.txt" },
@@ -20,11 +20,13 @@ interface UrlState {
   board: string;
   wordlist: string;
   multiboggle: boolean;
+  dims: 33 | 44 | 55;
 }
 const DEFAULT_STATE: UrlState = {
   board: "perslatgsineters",
   wordlist: "enable2k",
   multiboggle: false,
+  dims: 44,
 };
 
 function useUrlState() {
@@ -46,6 +48,22 @@ function useUrlState() {
     if (multiboggle) {
       s.multiboggle = true;
     }
+    const dims = searchParams.get("dims");
+    if (dims == "33") {
+      s.dims = 33;
+    } else if (dims == "44") {
+      s.dims = 44;
+    } else if (dims == "55") {
+      s.dims = 55;
+    } else {
+      if (s.board.length == 9) {
+        s.dims = 33;
+      } else if (s.board.length == 16 || s.board.length == 12) {
+        s.dims = 44;
+      } else if (s.board.length == 25) {
+        s.dims = 55;
+      }
+    }
     console.log(s);
     return s;
   }, [searchParams]);
@@ -62,6 +80,9 @@ function useUrlState() {
       if (newState.multiboggle !== DEFAULT_STATE.multiboggle) {
         params.multiboggle = "1";
       }
+      if (newState.dims !== DEFAULT_STATE.dims) {
+        params.dims = String(newState.dims);
+      }
       setSearchParams(params);
     },
     [setSearchParams]
@@ -72,7 +93,7 @@ function useUrlState() {
 
 function App() {
   const [urlState, setUrlState] = useUrlState();
-  const { board, wordlist, multiboggle } = urlState;
+  const { board, dims, wordlist, multiboggle } = urlState;
 
   const [transientBoard, setTransientBoard] = React.useState(board);
   React.useEffect(() => {
@@ -94,6 +115,13 @@ function App() {
 
   const setWordlist = (newWordlist: string) => {
     setUrlState({ ...urlState, wordlist: newWordlist });
+  };
+
+  const setDims = (newDimsStr: string) => {
+    const oldDims = urlState.dims;
+    const newDims = Number(newDimsStr) as 33 | 44 | 55;
+    const newBoard = adjustBoard(urlState.board, oldDims, newDims);
+    setUrlState({ ...urlState, board: newBoard, dims: newDims });
   };
 
   const wordlistNetworkPath = WORDLISTS.find((wl) => wl.key === wordlist)!.path;
@@ -119,6 +147,12 @@ function App() {
               </option>
             ))}
           </select>
+          {" "}
+          <select value={dims} onChange={(e) => setDims(e.currentTarget.value)}>
+            <option value={33}>3x3</option>
+            <option value={44}>4x4</option>
+            <option value={55}>5x5</option>
+          </select>
           <br />
           <input
             id="multiboggle"
@@ -139,6 +173,7 @@ function App() {
               wordlist={wordlistNetworkPath}
               board={board}
               multiboggle={multiboggle}
+              dims={dims}
             />
           ) : null}
         </React.Suspense>
