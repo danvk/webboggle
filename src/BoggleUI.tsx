@@ -42,6 +42,16 @@ function BoggleWordList(props: BoggleWordListProps) {
     displayWords.sort((w1, w2) => w1.word.localeCompare(w2.word));
   }
 
+  const [numToShow, setNumToShow] = React.useState(250);
+  React.useEffect(() => {
+    setNumToShow(250);
+  }, [words]);
+  const showMore = () => setNumToShow(numToShow + 250);
+
+  const handleMouseEnter: React.MouseEventHandler = (e) => {
+    setSelectedIndex(Number(e.currentTarget.getAttribute("data-index")));
+  };
+
   return (
     <>
       <select
@@ -52,11 +62,12 @@ function BoggleWordList(props: BoggleWordListProps) {
         <option value="length">Length</option>
       </select>
       <ol>
-        {displayWords.map((word) => (
+        {displayWords.slice(0, numToShow).map((word) => (
           <li
             key={word.i}
+            data-index={word.i}
             // TODO: this creates a ton of functions
-            onMouseEnter={() => setSelectedIndex(word.i)}
+            onMouseEnter={handleMouseEnter}
             className={classNames({ selected: word.i === selectedIndex })}
           >
             {word.word}
@@ -64,6 +75,9 @@ function BoggleWordList(props: BoggleWordListProps) {
           </li>
         ))}
       </ol>
+      {numToShow < words.length ? (
+        <button onClick={showMore}>Show More</button>
+      ) : null}
     </>
   );
 }
