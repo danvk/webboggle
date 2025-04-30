@@ -4,7 +4,7 @@ import {
   BoggleWord,
   getTrieForWordlist,
   getWordsOnBoard,
-  makeBoard44,
+  makeBoard,
   SCORES,
 } from "./boggle";
 import { Trie } from "./boggle-wasm";
@@ -12,6 +12,7 @@ import { BoggleGrid } from "./BoggleGrid";
 import classNames from "classnames";
 
 export interface BoggleUIProps {
+  dims: 33 | 44 | 55;
   wordlist: string;
   board: string;
   multiboggle: boolean;
@@ -68,9 +69,9 @@ function BoggleWordList(props: BoggleWordListProps) {
 }
 
 export const BoggleUI = React.memo((props: BoggleUIProps) => {
-  const { board, wordlist } = props;
+  const { board, dims, wordlist } = props;
 
-  const board44 = makeBoard44(board);
+  const boardArray = makeBoard(board, dims);
   const { data: trie, isLoading, error } = useSWR(wordlist, getTrieForWordlist);
 
   if (isLoading) return "Loading...";
@@ -78,11 +79,11 @@ export const BoggleUI = React.memo((props: BoggleUIProps) => {
     console.error(error);
     return "Error!";
   }
-  return <BoggleUIWithTrie {...props} trie={trie!} board={board44} />;
+  return <BoggleUIWithTrie {...props} trie={trie!} board={boardArray} />;
 });
 
 function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
-  const { board, multiboggle, trie } = props;
+  const { board, dims, multiboggle, trie } = props;
   const [points, words] = React.useMemo(
     () => getWordsOnBoard(trie, board, multiboggle),
     [board, multiboggle, trie]
@@ -97,7 +98,7 @@ function BoggleUIWithTrie(props: BoggleUIProps & { trie: Trie }) {
 
   return (
     <div>
-      <BoggleGrid board={board} selectedPath={selectedPath} />
+      <BoggleGrid board={board} dims={dims} selectedPath={selectedPath} />
       <div>
         {points} points, {words.length} words
       </div>
