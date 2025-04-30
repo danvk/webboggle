@@ -55,6 +55,14 @@ function useUrlState() {
       s.dims = 44;
     } else if (dims == "55") {
       s.dims = 55;
+    } else {
+      if (s.board.length == 9) {
+        s.dims = 33;
+      } else if (s.board.length == 16 || s.board.length == 12) {
+        s.dims = 44;
+      } else if (s.board.length == 25) {
+        s.dims = 55;
+      }
     }
     console.log(s);
     return s;
